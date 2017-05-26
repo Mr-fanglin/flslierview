@@ -15,7 +15,7 @@ static NSTimeInterval const kAnimationDuration = 0.3;
 
 #pragma mark ---------- left config -----------
 static CGFloat const leftShowWidth = 240.f;//左边显示的宽度
-static CGFloat const leftScale = 1.0f;//缩放比例
+static CGFloat const leftScale = 1.f;//缩放比例
 static CGFloat const leftDragbleWidth = 80.f;
 static CGFloat const leftMinDragLength = 100.f;
 
@@ -85,7 +85,9 @@ typedef NS_ENUM(NSUInteger, FLDragDirection){
     _leftContainerView = [[UIView alloc] init];
     _rightContainerView = [[UIView alloc] init];
     _maskView = [[UIView alloc] init];
-    _maskView.hidden = YES;
+    _maskView.backgroundColor = [UIColor blackColor];
+    _maskView.alpha = 0.0;
+//    _maskView.hidden = YES;
     
     _mainContainerView.frame = view_bounds;
     _leftContainerView.frame = view_bounds;
@@ -508,10 +510,11 @@ typedef NS_ENUM(NSUInteger, FLDragDirection){
                          
                          _leftContainerView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
                          _leftContainerView.transform = CGAffineTransformScale(_leftContainerView.transform, 1, 1);
+                         _maskView.alpha = 0.5;
                      }
                      completion:^(BOOL finished) {
                          _isLeftShow = YES;
-                         _maskView.hidden = NO;
+//                         _maskView.hidden = NO;
                          [_mainContainerView bringSubviewToFront:_maskView];
                      }];
 }
@@ -525,10 +528,11 @@ typedef NS_ENUM(NSUInteger, FLDragDirection){
                          
                          _leftContainerView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, -leftShowWidth, 0);
                          _leftContainerView.transform = CGAffineTransformScale(_leftContainerView.transform, leftScale, leftScale);
+                         _maskView.alpha = 0.0;
                      }
                      completion:^(BOOL finished) {
                          _isLeftShow = NO;
-                         _maskView.hidden = YES;
+//                         _maskView.hidden = YES;
                          _leftContainerView.hidden = YES;
                      }];
 }
@@ -548,6 +552,7 @@ typedef NS_ENUM(NSUInteger, FLDragDirection){
                      }
                      completion:^(BOOL finished) {
                          _isRightShow = YES;
+                         _maskView.alpha = 1.0;
                          _maskView.hidden = NO;
                          [_mainContainerView bringSubviewToFront:_maskView];
                      }];
@@ -567,6 +572,7 @@ typedef NS_ENUM(NSUInteger, FLDragDirection){
                      }
                      completion:^(BOOL finished) {
                          _isRightShow = NO;
+                         _maskView.alpha = 0.5;
                          _maskView.hidden = YES;
                          _rightContainerView.hidden = YES;
                      }];
